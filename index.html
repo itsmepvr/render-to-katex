@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.min.css'>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathquill/0.10.1/mathquill.min.js"></script>
+  <style>
+    .mainBody {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100%;
+      background-color: #F3F7FC;
+      overflow: hidden;
+    }
+
+    .mZero {
+      background-color: #F05635;
+      color: white;
+    }
+
+    .mCard {
+      min-height: 50%;
+      border: 1px solid #eee;
+      min-width: 50%;
+      text-align: center;
+      border-radius: 5px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+      background-color: #fff;
+      font-size: 30px;
+      display: flex;
+      flex-direction: column;
+      height: 90%;
+      width: 100%:
+    }
+
+    .mOne {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    #math-field {
+      min-width: 50%;
+      max-width: 100%;
+      border: 1px solid #eee;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
+
+    .mTwo {
+      text-align: left;
+      padding: 20px;
+      font-size: 35px;
+      flex-grow: 1;
+    }
+
+    .mFour {
+      font-size: 14px;
+      background-color: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+  <div class='mainBody'>
+    <div class='mCard'>
+      <div class='mZero'>Convert Math Equations to Katex</div>
+      <div class='mOne'>
+        <div>Type your math here</div>
+        <span id="math-field"></span>
+      </div>
+      <div class='mTwo'>
+        <div id="latex"></div>
+      </div>
+      <div class='mThree'>
+        <button class='btn btn-sm btn-primary pull-right copyBtn'>Copy</button>
+      </div>
+      <div class='mFour'>
+        <footer>Developer: Venkata Ramana P(itsmepvr.github.io)</footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    (function () {
+      "use strict"
+      var mathFieldSpan = document.getElementById('math-field');
+      var latexSpan = document.getElementById('latex');
+
+      var MQ = MathQuill.getInterface(2); // for backcompat
+      var mathField = MQ.MathField(mathFieldSpan, {
+        spaceBehavesLikeTab: true, // configurable
+        handlers: {
+          edit: function () { // useful event handlers
+            let output = mathField.latex();
+            output = output.replace(/\\/g, "\\\\");
+            latexSpan.textContent = output;
+          }
+        }
+      });
+
+      $(".copyBtn").click(function () {
+        var fullLink = document.createElement('input');
+        document.body.appendChild(fullLink);
+        fullLink.value = $("#latex").html();
+        fullLink.select();
+        document.execCommand('copy');
+        fullLink.remove();
+        $(this).html('copied').css({ "pointer-events": "none" });
+        setTimeout(function () {
+          $(".copyBtn").html('Copy').css({ "pointer-events": "auto" });
+        }, 1000)
+      });
+
+    }())
+
+
+
+  </script>
+</body>
+
+</html>
